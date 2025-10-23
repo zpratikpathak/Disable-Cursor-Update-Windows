@@ -194,21 +194,23 @@ function Enable-CursorUpdate($Username) {
         $Settings = $JsonString | ConvertFrom-Json -ErrorAction Stop
 
         # Check if settings are present
-        $Props = $Settings.PSObject.Properties
-        if (-not $Props.'update.mode' -and -not $Props.'update.enableWindowsBackgroundUpdates') {
+        $HasUpdateMode = $Settings.PSObject.Properties.Name -contains 'update.mode'
+        $HasBackgroundUpdates = $Settings.PSObject.Properties.Name -contains 'update.enableWindowsBackgroundUpdates'
+        
+        if (-not $HasUpdateMode -and -not $HasBackgroundUpdates) {
             Write-Host "    [INFO] Update settings not found in file. Updates are already ENABLED (default)." -ForegroundColor $ColorInfo
             return
         }
 
         $ChangesMade = $false
         # Remove properties
-        if ($Props.'update.mode') {
-            $Props.Remove('update.mode')
+        if ($HasUpdateMode) {
+            $Settings.PSObject.Properties.Remove('update.mode')
             Write-Host "    [OK] Removed 'update.mode' setting." -ForegroundColor $ColorSuccess
             $ChangesMade = $true
         }
-        if ($Props.'update.enableWindowsBackgroundUpdates') {
-            $Props.Remove('update.enableWindowsBackgroundUpdates')
+        if ($HasBackgroundUpdates) {
+            $Settings.PSObject.Properties.Remove('update.enableWindowsBackgroundUpdates')
             Write-Host "    [OK] Removed 'update.enableWindowsBackgroundUpdates' setting." -ForegroundColor $ColorSuccess
             $ChangesMade = $true
         }
