@@ -1,0 +1,47 @@
+name: Update README Last Updated Date
+
+on:
+  schedule:
+    # Run on the first day of every month at 00:00 UTC
+    - cron: '0 0 1 * *'
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  update-date:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Update README date
+        run: |
+          # Get current date in "Month Year" format (e.g., "October 2025")
+          CURRENT_DATE=$(date '+%B %Y')
+          
+          # Replace the Last Updated line
+          sed -i "s/\*\*Last Updated\*\*: .*/\*\*Last Updated\*\*: $CURRENT_DATE/" README.md
+          
+          # Display the change
+          echo "Updated README.md with date: $CURRENT_DATE"
+          grep "Last Updated" README.md
+
+      - name: Commit and push changes
+        run: |
+          # Configure git
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Check if there are changes
+          if git diff --quiet README.md; then
+            echo "No changes to commit"
+          else
+            git add README.md
+            git commit -m "chore: update README last updated date to $(date '+%B %Y')"
+            git push
+          fi

@@ -2,6 +2,8 @@
 
 A PowerShell script to centrally manage (disable or enable) automatic updates for the Cursor IDE on Windows systems.
 
+**Last Updated**: October 2025
+
 ## 📚 Table of Contents
 
 - [🚀 Quick Start](#-quick-start)
