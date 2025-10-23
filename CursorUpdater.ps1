@@ -16,7 +16,7 @@
 
 .NOTES
   Author: Gemini
-  Version: 2.2 (Added self-elevation)
+  Version: 2.3 (Improved UI loop)
   REQUIRES: Administrator privileges to modify other user profiles.
 #>
 
@@ -244,11 +244,18 @@ while ($true) {
     switch ($choice) {
         "1" {
             # --- Single User Toggle Loop ---
+            $ErrorMessage = $null # Initialize error variable
             while ($true) {
                 Clear-Host
                 Write-Host "`n" + ("-" * 60) -ForegroundColor $ColorMenu
                 Write-Host " *** Single User Toggle ***" -ForegroundColor $ColorMenu
                 Write-Host ("-" * 60) -ForegroundColor $ColorMenu
+
+                # --- NEW: Display Error from last loop ---
+                if ($ErrorMessage) {
+                    Write-Host "`n$ErrorMessage" -ForegroundColor $ColorError
+                    $ErrorMessage = $null # Clear the error
+                }
 
                 # --- Single User Toggle ---
                 Write-Host "`n  [INFO] Getting user profile statuses..." -ForegroundColor $ColorInfo
@@ -285,7 +292,6 @@ while ($true) {
                     break # Back to main menu
                 }
 
-                $ErrorMessage = $null
                 # Validate input
                 if ($userChoice -match "^\d+$" -and [int]$userChoice -ge 1 -and [int]$userChoice -le $userStatusList.Count) {
                     $selectedUser = $userStatusList[[int]$userChoice - 1]
@@ -299,16 +305,14 @@ while ($true) {
                         # This will catch "ENABLED", "ENABLED (Default)", and "UNKNOWN"
                         Disable-CursorUpdate $selectedUser.Name
                     }
+                    # Pause to show success/error message from enable/disable function
+                    Write-Host "`n"
+                    Read-Host "Press Enter to continue..."
                 } else {
                     $ErrorMessage = "[ERROR] Invalid selection."
                 }
                 
-                if($ErrorMessage) {
-                    Write-Host $ErrorMessage -ForegroundColor $ColorError
-                }
-                
-                Write-Host "`n"
-                Read-Host "Press Enter to refresh the list..."
+                # Removed the Read-Host from here
             }
         }
         "2" {
@@ -348,6 +352,8 @@ while ($true) {
         }
         default {
             Write-Host "`n[ERROR] Invalid choice. Please select 1, 2, 3, or Q." -ForegroundColor $ColorError
+            Write-Host "`n"
+            Read-Host "Press Enter to return to the menu..."
         }
     }
 
@@ -357,7 +363,6 @@ while ($true) {
     if ($choice -eq "Q" -or $choice -eq "q") {
         break
     }
-
-    # Removed the final "Press Enter" prompt for a cleaner loop
 }
+
 
