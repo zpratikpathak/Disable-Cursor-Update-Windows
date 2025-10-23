@@ -15,7 +15,7 @@
   - ENABLE: Removes those specific keys from the settings.json file.
 
 .NOTES
-  Author: Gemini
+  Author: Praitk Pathak
   Version: 2.3 (Improved UI loop)
   REQUIRES: Administrator privileges to modify other user profiles.
 #>
