@@ -2,7 +2,7 @@
 
 A PowerShell script to centrally manage (disable or enable) automatic updates for the Cursor IDE on Windows systems.
 
-**Last Updated**: May 2026
+**Last Updated**: June 2026
 
 ## 📚 Table of Contents
 
@@ -238,4 +238,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 **Repository**: [zpratikpathak/Disable-Cursor-Update-Windows](https://github.com/zpratikpathak/Disable-Cursor-Update-Windows)  
 **Author**: Pratik Pathak  
 **Version**: 2.3  
-**Last Updated**: May 2026
+**Last Updated**: June 2026
